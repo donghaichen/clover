@@ -16,4 +16,4 @@ Theseus的运行环境要求
 
 
 ## 参与开发
-注册并登录 Github 帐号， fork 本项目并进行改动。
+注册并登录 Github或Coding帐号， fork 本项目来改变这个混乱的API世界。
