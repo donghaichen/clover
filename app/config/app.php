@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * 应用配置项
  * User: donghai
  * Date: 16/1/28
  * Time: 21:38
