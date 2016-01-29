@@ -1,14 +1,53 @@
 <?php
+
 /*
 |--------------------------------------------------------------------------
-| (APP)应用引导文件
+|(APP)应用引导文件
 |--------------------------------------------------------------------------
 |
 | 目前只支持MYSQL,未来可能会增加对NOSQL的支持
 |
 */
+use Illuminate\Container\Container;
+use Illuminate\Database\Capsule\Manager as DB;
 
 require_once __DIR__.'/../vendor/autoload.php';
+
+
+$db = new DB;
+
+/*
+|--------------------------------------------------------------------------
+| 创建链接
+|--------------------------------------------------------------------------
+|
+| 创建链接
+|
+*/
+
+$db->addConnection($database);
+
+/*
+|--------------------------------------------------------------------------
+| 设置全局静态可访问
+|--------------------------------------------------------------------------
+|
+| 设置全局静态可访问
+|
+*/
+
+$db->setAsGlobal();
+
+/*
+|--------------------------------------------------------------------------
+| 启动Eloquent
+|--------------------------------------------------------------------------
+|
+| 启动Eloquent
+|
+*/
+
+$db->bootEloquent();
 
 
 /*
@@ -22,15 +61,15 @@ require_once __DIR__.'/../vendor/autoload.php';
 |
 */
 
-$app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
-    require __DIR__.'/../app/Config/route.php';
-});
-
-try {
-    (new Dotenv\Dotenv(__DIR__.'/../'))->load();
-} catch (Dotenv\Exception\InvalidPathException $e) {
-    //
-}
+//$app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
+//    require __DIR__.'/../app/Config/route.php';
+//});
+//
+//try {
+//    (new Dotenv\Dotenv(__DIR__.'/../'))->load();
+//} catch (Dotenv\Exception\InvalidPathException $e) {
+//    //
+//}
 
 /*
 |--------------------------------------------------------------------------
@@ -42,9 +81,10 @@ try {
 | application as an "IoC" container and router for this framework.
 |
 */
-
-$app = new Laravel\Lumen\Application(
-    realpath(__DIR__.'/../')
-);
+//
+//$app = new Laravel\Lumen\Application(
+//    realpath(__DIR__.'/../')
+//);
 
 return $app;
+

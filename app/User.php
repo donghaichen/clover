@@ -8,10 +8,20 @@
 |
 */
 
-namespace Illuminate\Contracts\Database;
+use  Illuminate\Database\Eloquent\Model  as Eloquent;
 
-
-class User
+class User extends  Eloquent
 {
-
+    protected $table = 'users';
 }
+//// 查询id为2的
+//$users = User::find(2);
+//
+//// 查询全部
+//$users = User::all();
+//
+//// 创建数据
+//$user = new User;
+//$user->username = 'someone';
+//$user->email = 'some@overtrue.me';
+//$user->save();
