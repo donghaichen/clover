@@ -1,14 +1,12 @@
 {
     "name": "theseus/theseus",
     "description": "The Theseus Framework.",
-    "keywords": ["framework", "theseus"],
+    "keywords": ["framework", "theseus", "php"],
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=7.0.2",
-        "theseus/framework": "5.2.*",
+        "php": ">=5.5.9",
         "illuminate/database": "~5.2",
-        "tinylara/framework": "dev-master",
         "monolog/monolog": "1.13.1"
     },
     "autoload": {
@@ -22,7 +20,7 @@
     "scripts": {
         "post-root-package-install": [
             "php -r \"copy('.env.example', '.env');\""
-        ],
+        ]
     },
     "config": {
         "preferred-install": "dist"

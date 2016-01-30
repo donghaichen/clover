@@ -8,6 +8,10 @@
 |
 */
 return [
+    'key'        => '12344555',
+    'debug'      => 'true',
+    'url'        => 'http://localhost',
+    'timezone'   => 'PRC',
 
     'sms' => [
         'url'      => env('SMS_URL',  'send_url'),
@@ -15,5 +19,4 @@ return [
         'pass'     => env('SMS_PASS', 'password'),
         'sign'     => env('SMS_SIGN', 'siginname'),
     ],
-
 ];

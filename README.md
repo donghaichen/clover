@@ -10,7 +10,7 @@ Theseus专注提供无状态的 API 服务
 
 Theseus的运行环境要求
 
- + PHP >= 7.0.2
+ + PHP >= 5.5.9
  + OpenSSL 扩展
  + PDO PHP 扩展
 

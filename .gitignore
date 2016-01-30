@@ -1,4 +1,6 @@
 *.log
 /vendor
 /.idea
-.env
+composer.lock
+.DS_Store
+Thumbs.db
