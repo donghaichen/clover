@@ -15,7 +15,7 @@ Clover－－专注无状态的 API 服务
 
 ```shell
 composer create-project clover/clover --prefer-dist
-cd theseus
+cd clover
 php -S 127.0.0.1:8080 -t public public/index.php
 ```
 
