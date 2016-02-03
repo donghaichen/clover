@@ -9,28 +9,40 @@
 |
 */
 use Illuminate\Database\Capsule\Manager as DB;
+use Overtrue\Validation\Translator;
+use Overtrue\Validation\Factory as ValidatorFactory;
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Psr\Http\Message\ResponseInterface as Response;
 
 define('BASE_PATH', __DIR__);
 
 require_once BASE_PATH . '/vendor/autoload.php';
 
 
+$config = require BASE_PATH.'/config/app.php';
+define('BASE_URL', $config['url']);
+date_default_timezone_set($config['timezone']);
+
+
+$database = require BASE_PATH.'/config/database.php';
 $db = new DB;
 $db->addConnection($database);
 $db->setAsGlobal();
 $db->bootEloquent();
 
-// BASE_URL
-$config = require BASE_PATH.'/config/config.php';
-define('BASE_URL', $config['base_url']);
-// TIME_ZONE
-date_default_timezone_set($config['time_zone']);
-// Eloquent ORM
-$capsule = new Capsule;
-$capsule->addConnection(require BASE_PATH.'/config/database.php');
-$capsule->bootEloquent();
-// View Loader
-class_alias('\TinyLara\View\View','View');
+define('LOG_PATH', BASE_PATH.'/resources/log');
+if (!is_dir(LOG_PATH)) {
+    mkdir(LOG_PATH, 0700, true);
+}
+$monolog = new \Monolog\Logger('system');
+$monolog->pushHandler(new \Monolog\Handler\StreamHandler(LOG_PATH.'/app.log', \Monolog\Logger::ERROR));
+
+$app = new \Slim\Slim([
+//    'debug'          => $config->get('app.debug')
+]);
+//$app->config    = $config;
+$app->validator = new ValidatorFactory(new Translator);
+
+require BASE_PATH.'/config/route.php';
 
 return $app;
-

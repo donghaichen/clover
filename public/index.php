@@ -36,7 +36,8 @@
 
 */
 
-$app = require __DIR__ . '/../app/bootrstrap.php';
+define('PUBLIC_PATH', __DIR__);
+require PUBLIC_PATH.'/../bootstrap.php';
 
 /*
 |--------------------------------------------------------------------------

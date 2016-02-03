@@ -8,9 +8,11 @@
 | 例如/user 自动匹配UserController@index
 |
 */
-return [
-    'user' => [
-        '/'      => 'UserController@index',
-    ],
 
-];
+
+$app->get('/hello/{name}', function (Request $request, Response $response) {
+    $name = $request->getAttribute('name');
+    $response->getBody()->write("Hello, $name");
+
+    return $response;
+});

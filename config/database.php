@@ -11,10 +11,10 @@ return [
     'driver'    => 'mysql',
     'host'      => '127.0.0.1',
     'database'  => 'theseus',
-    'username'  => 'root',
-    'password'  => 'root',
+    'username'  => 'theseus',
+    'password'  => 'theseus',
     'hostport'  => '3306',
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
-    'prefix'    => 'th',
+    'prefix'    => 'th_',
 ];
