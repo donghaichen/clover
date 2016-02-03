@@ -9,7 +9,7 @@
         "illuminate/database": "~5.2",
         "overtrue/validation": "1.0",
         "monolog/monolog": "1.13.1",
-        "slim/slim": "~3.0"
+        "noahbuscher/macaw": "dev-master"
     },
     "autoload": {
         "classmap": [

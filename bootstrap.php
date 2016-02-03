@@ -11,15 +11,15 @@
 use Illuminate\Database\Capsule\Manager as DB;
 use Overtrue\Validation\Translator;
 use Overtrue\Validation\Factory as ValidatorFactory;
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
+
 
 define('BASE_PATH', __DIR__);
 
 require_once BASE_PATH . '/vendor/autoload.php';
 
 
-$config = require BASE_PATH.'/config/app.php';
+$config = require BASE_PATH . '/config/app.php';
+$settings= $config['settings'];
 define('BASE_URL', $config['url']);
 date_default_timezone_set($config['timezone']);
 
@@ -30,19 +30,23 @@ $db->addConnection($database);
 $db->setAsGlobal();
 $db->bootEloquent();
 
-define('LOG_PATH', BASE_PATH.'/resources/log');
-if (!is_dir(LOG_PATH)) {
-    mkdir(LOG_PATH, 0700, true);
-}
-$monolog = new \Monolog\Logger('system');
-$monolog->pushHandler(new \Monolog\Handler\StreamHandler(LOG_PATH.'/app.log', \Monolog\Logger::ERROR));
 
-$app = new \Slim\Slim([
-//    'debug'          => $config->get('app.debug')
-]);
-//$app->config    = $config;
+$app = new \Slim\App($config);
+//var_dump($settings);
+//exit();
+$container = $app->getContainer();
+$container['logger'] = function () {
+    $settings = $settings['logger'];
+    $logger = new Monolog\Logger($settings['name']);
+    $logger->pushProcessor(new Monolog\Processor\UidProcessor());
+    $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], Monolog\Logger::DEBUG));
+    return $logger;
+};
+
+
 $app->validator = new ValidatorFactory(new Translator);
 
 require BASE_PATH.'/config/route.php';
 
 return $app;
+

@@ -7,9 +7,17 @@
 | 在这里定义您的应用配置
 |
 */
+
 return [
     'key'        => '12344555',
     'debug'      => 'true',
     'url'        => 'http://localhost',
-    'timezone'   => 'PRC'
+    'timezone'   => 'PRC',
+    'settings' => [
+        'displayErrorDetails' => true,
+        'logger' => [
+            'name' => 'clover',
+            'path' => __DIR__ . '/../resources/log/app.log',
+        ],
+    ],
 ];

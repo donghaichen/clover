@@ -1,6 +1,13 @@
 Clover 1.0.0 beta
 =======================================
-
+``` html
+   ______    __    ____  _    __    ______    ____ 
+  / ____/   / /   / __ \| |  / /   / ____/   / __ \
+ / /       / /   / / / /| | / /   / __/     / /_/ /
+/ /___    / /___/ /_/ / | |/ /   / /___    / _, _/ 
+\____/   /_____/\____/  |___/   /_____/   /_/ |_|  
+                                                   
+```
 
 Clover－－专注无状态的 API 服务
 
@@ -16,8 +23,7 @@ Clover－－专注无状态的 API 服务
 
 ```shell
 composer create-project clovers/clover --prefer-dist
-cd clover
-php -S 127.0.0.1:8080 -t public public/index.php
+cd clover/public && php -S 127.0.0.1:3000
 ```
 or
 
@@ -26,10 +32,10 @@ or
 git clone https://github.com/donghaichen/Clover.git
 cd clover
 composer intall
-php -S 127.0.0.1:8080 -t public public/index.php
+cd public && php -S 127.0.0.1:3000
 ```
 
-更多教程请移步Clover官方文档：http://doc.mengniang.tv/
+更多教程请移步Clover官方文档： [http://doc.mengniang.tv/](http://doc.mengniang.tv/)
 
 或加入Clover QQ群：366313023 讨论
 
