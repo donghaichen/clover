@@ -19,6 +19,15 @@ composer create-project clovers/clover --prefer-dist
 cd clover
 php -S 127.0.0.1:8080 -t public public/index.php
 ```
+or
+
+
+```shell
+git clone https://github.com/donghaichen/Clover.git
+cd clover
+composer intall
+php -S 127.0.0.1:8080 -t public public/index.php
+```
 
 更多教程请移步Clover官方文档：http://doc.mengniang.tv/
 
