@@ -14,7 +14,7 @@ Clover－－专注无状态的 API 服务
 ## 开始Clover之旅
 
 ```shell
-composer create-project clover/clover --prefer-dist
+composer create-project clovers/clover --prefer-dist
 cd clover
 php -S 127.0.0.1:8080 -t public public/index.php
 ```
