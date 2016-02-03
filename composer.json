@@ -1,7 +1,7 @@
 {
     "name": "theseus/theseus",
     "description": "The Theseus Framework.",
-    "keywords": ["framework", "theseus", "php"],
+    "keywords": ["framework", "theseus", "php", "API", "RESTful", "API框架", "PHP框架"],
     "license": "MIT",
     "type": "project",
     "require": {

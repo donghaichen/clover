@@ -25,19 +25,18 @@ Theseus的运行环境要求
 请使用 composer 安装
 
 ```shell
-git clone https://github.com/donghaichen/theseus.git
+composer create-project theseus/theseus --prefer-dist
 cd theseus
-composer install
-php -S 0.0.0.0:8080 -t public public/index.php
+php -S 127.0.0.1:8080 -t public public/index.php
 ```
 
-优雅链接
+#优雅链接
 
 ```nginx
 
 location / {
           try_files $uri $uri/ /index.php?$query_string;
-      }
+           }
 ```
 
 
