@@ -23,7 +23,7 @@ Clover－－专注无状态的 API 服务
 
 ```shell
 composer create-project clovers/clover --prefer-dist
-cd clover/public && php -S 127.0.0.1:3000
+cd clover && php -S 127.0.0.1:8888 -t public
 ```
 or
 
@@ -32,7 +32,7 @@ or
 git clone https://github.com/donghaichen/clover.git
 cd clover
 composer intall
-cd public && php -S 127.0.0.1:3000
+php -S 127.0.0.1:8888 -t public
 ```
 
 更多教程请移步Clover官方文档： [http://doc.mengniang.tv/](http://doc.mengniang.tv/)
