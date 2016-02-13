@@ -49,4 +49,3 @@ $app->validator = new ValidatorFactory(new Translator);
 require BASE_PATH.'/config/route.php';
 
 return $app;
-
