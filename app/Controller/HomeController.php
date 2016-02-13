@@ -12,7 +12,8 @@ namespace Illuminate\Contracts\Database;
 class HomeController extends BaseController
 {
 
-    public function home() {
+    public function home()
+    {
         return $this->json(['app' => 'Rester', 'message' => 'Hello world!']);
     }
 }

@@ -5,11 +5,10 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.0.3",
         "illuminate/database": "~5.2",
         "overtrue/validation": "1.0",
-        "monolog/monolog": "1.13.1",
-        "noahbuscher/macaw": "dev-master"
+        "monolog/monolog": "1.13.1"
     },
     "autoload": {
         "classmap": [
