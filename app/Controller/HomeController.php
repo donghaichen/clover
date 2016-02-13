@@ -14,6 +14,11 @@ class HomeController extends BaseController
 
     public function home()
     {
-        return $this->json(['app' => 'Rester', 'message' => 'Hello world!']);
+        return array(
+            'title'     => 'Hello Clover!',
+            'content'   => '愿您的 API 像四叶草一样,集万千美好于一身!',
+            'version'   => '1.0.0 beta',
+            'time'      => time(),
+        );
     }
 }
