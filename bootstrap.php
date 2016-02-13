@@ -31,21 +31,7 @@ $db->setAsGlobal();
 $db->bootEloquent();
 
 
-$app = new \Slim\App($config);
-//var_dump($settings);
-//exit();
-$container = $app->getContainer();
-$container['logger'] = function () {
-    $settings = $settings['logger'];
-    $logger = new Monolog\Logger($settings['name']);
-    $logger->pushProcessor(new Monolog\Processor\UidProcessor());
-    $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], Monolog\Logger::DEBUG));
-    return $logger;
-};
-
-
-$app->validator = new ValidatorFactory(new Translator);
 
 require BASE_PATH.'/config/route.php';
-
+exit;
 return $app;

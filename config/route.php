@@ -8,16 +8,20 @@
 | 例如/user 自动匹配UserController@index
 |
 */
-use TinyLara\Routing\Router as Route;
-Route::get('/', 'HomeController@home');
-Route::any('foo', function() {
-    echo "Foo!";
+use Phroute\Phroute\RouteCollector;
+use Phroute\Phroute\Dispatcher;
+$collector = new RouteCollector();
+$collector->get('/', function(){
+    echo 'Home Page';
 });
-Route::filter(function() {
-    return isset($_GET['token']) && $_GET['token'] == 1;
-}, function(){
-    Route::any('bar', function() {
-        echo "Bar!<br>Filter Success!";
-    });
+$collector->post('products', function(){
+    return 'Create Product';
 });
-Route::dispatch();
+$collector->put('items/{id}', function($id){
+    return 'Amend Item ' . $id;
+});
+$dispatcher =  new Dispatcher($collector->getData());
+return $dispatcher;
+//echo $dispatcher->dispatch('GET', '/'), "\n";   // Home Page
+//echo $dispatcher->dispatch('POST', '/products'), "\n"; // Create Product
+//echo $dispatcher->dispatch('PUT', '/items/123'), "\n"; // Amend Item 123
