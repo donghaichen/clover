@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Laravel - A PHP Framework For Web Artisans
+ * Clover - A PHP Framework
  *
  * @package  Clover
  * @author   Donghai Chen <chendonghai888@gmail.com>

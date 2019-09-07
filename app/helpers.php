@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Simple function to replicate PHP 5 behaviour
+ */
+function microtimeFloat()
+{
+    list($usec, $sec) = explode(" ", microtime());
+    return ((float)$usec + (float)$sec);
+}
+
 function config($name = '')
 {
     //配置环境变量

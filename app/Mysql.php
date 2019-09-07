@@ -1,24 +1,15 @@
 <?php
 
-//select语句
-/*
-->where('id', 1)
-     *
-     *  ->where([
-        ['name', 'like', $name . '%'],
-        ['title', 'like', '%' . $title],
-        ['id', '>', $id],
-        ['status', ' = ', $status],
-    ])
-}
-*/
-
 namespace App;
 
 class Mysql
 {
     protected $_PDO;
+    protected $config = [];
+    protected $queryStart = 0;
     protected $prefix;
+    protected $table;
+    protected $rowCount = 0;
     protected $options = [
         'alias' => '',
         'param' => [],
@@ -26,32 +17,49 @@ class Mysql
         'join' => '',
         'order' => '',
         'limit' => '',
+        'field' => '*',
     ];
     protected $count = 0;
-    protected $field = '';
-    protected $debug = 'false';
+    protected $field = '*';
+    protected $sql_debug = false;
 
-    public function __construct($config, $table)
+    public function __construct($config, $table = '')
     {
+        //连接接数据库
+        try {
+            $this->config = $config;
+            $this->table = $table;
+            $this->connect();
+
+        } catch (\PDOException $e) {
+            if ($e->getCode() == 'HY000') {
+                $this->_PDO = null;
+                $this->connect();
+            }else{
+                throw new \Exception($e->getMessage());
+            }
+        }
+    }
+
+    private function connect()
+    {
+        $this->_PDO = null;
+        $config = $this->config;
         $type = $config['type'];     //数据库类型
         $host = $config['host']; //数据库主机名
         $database = $config['database'];    //使用的数据库
         $username = $config['username'];      //数据库连接用户名
         $password = $config['password'];          //对应的密码
         $dsn = "$type:host=$host;dbname=$database";
-        //连接接数据库
-        try {
-            $this->_PDO = new \PDO($dsn, $username, $password, [\PDO::ATTR_PERSISTENT => true]); //初始化一个PDO对象
-            //设置客户端字符集
-            $charset = $config['charset'];
-            $this->_PDO->exec("set names '$charset'");
-            //禁用prepared statements的仿真效果 确保SQL语句和相应的值在传递到mysql服务器之前是不会被PHP解析
-            $this->_PDO->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
-            $this->prefix = $config['prefix'];
-            $this->options['table'] = $config['prefix'] . $table;
-        } catch (\PDOException $e) {
-            throw new \Exception("Error!: " . $e->getMessage() . "<br/>");
-        }
+        $this->_PDO = new \PDO($dsn, $username, $password, [\PDO::ATTR_PERSISTENT => true]); //设置长链接
+        //设置客户端字符集
+        $charset = $config['charset'];
+        $this->_PDO->exec("set names '$charset'");
+        //禁用prepared statements的仿真效果 确保SQL语句和相应的值在传递到mysql服务器之前是不会被PHP解析
+        $this->_PDO->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+        $this->_PDO->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $this->prefix = $config['prefix'];
+        $this->options['table'] = $config['prefix'] . $this->table;
     }
 
     //返回PDO对象
@@ -60,59 +68,23 @@ class Mysql
         return $this->_PDO;
     }
 
-    //操作表
-    public function table($table)
+    public function toArray()
     {
-        $this->options['table'] = $table;
-        return $this;
-    }
-
-    //字段
-    public function field($field)
-    {
-        $this->options['field'] = $field;
-        $this->field = $field;
-        return $this;
-    }
-
-    /**
-     * Count elements of an object
-     */
-    public function count()
-    {
-        $this->options['field'] = 'COUNT(*) AS count';
-        $res = $this->preQuery();
-        return $res[0]['count'];
-    }
-
-    /**
-     * 指定排序 order('id','desc') 或者 order(['id'=>'desc','create_time'=>'desc'])
-     * @access public
-     * @param string|array $field 排序字段
-     * @param string           $order 排序
-     * @return $this
-     */
-    public function order($field, $order = '')
-    {
-        $order = strtoupper($order);
-        if (is_string($field))
-        {
-            $order = empty($order) ? 'DESC': $order;
-            $this->options['order'] .= "$field $order, ";
-        }else{
-            foreach ($field as $k => $v)
-            {
-                $v = strtoupper($v);
-                $this->options['order'] .= "$k $v,";
-            }
+        //首先判断是否是对象
+        $arr = is_object($obj) ? get_object_vars($obj) : $obj;
+        if(is_array($arr)) {
+            //这里相当于递归了一下，如果子元素还是对象的话继续向下转换
+            return array_map(__FUNCTION__, $arr);
+        }else {
+            return $arr;
         }
         return $this;
     }
 
-    //限制
-    public function limit($limit)
+    //数据表
+    public function table($table)
     {
-        $this->options['limit'] = ' LIMIT '.$limit;
+        $this->options['table'] = $table;
         return $this;
     }
 
@@ -131,6 +103,14 @@ class Mysql
         } else {
             $this->options['table'] = $this->options['table'] . " AS $alias";
         }
+        return $this;
+    }
+
+    //字段
+    public function field(string $field = '*')
+    {
+        $this->options['field'] = $field;
+        $this->field = $field;
         return $this;
     }
 
@@ -164,21 +144,10 @@ class Mysql
         return $this->join($join, $condition, 'FULL');
     }
 
-    /**
-     * 指定group查询
-     * @access public
-     * @param string|array $group GROUP
-     * @return $this
-     */
-    public function group($group)
-    {
-        $this->options['group'] = "GROUP BY $group";
-        return $this;
-    }
-
     //条件
     public function where($field, $op = null, $condition = null)
     {
+        $v = $op;
         $where = '';
         if(is_array($field))
         {
@@ -191,7 +160,9 @@ class Mysql
         }
         if(is_string($field))
         {
-            $op = is_null($op) ? '=' : "$op";
+            $op = is_null($condition) ? '=' : $op;
+            $op = strtoupper($op);
+            $condition = is_null($condition) ? $v : $condition;
             $condition = is_string($condition) ? "'$condition'" : $condition;
             $where .= "$field $op $condition AND ";
             $this->options['where'] .= $where;
@@ -199,8 +170,51 @@ class Mysql
         return $this;
     }
 
+    /**
+     * 指定group查询
+     * @access public
+     * @param string|array $group GROUP
+     * @return $this
+     */
+    public function group($group)
+    {
+        $this->options['group'] = "GROUP BY $group";
+        return $this;
+    }
+
+    /**
+     * 指定排序 order('id','desc') 或者 order(['id'=>'desc','create_time'=>'desc'])
+     * @access public
+     * @param string|array $field 排序字段
+     * @param string           $order 排序
+     * @return $this
+     */
+    public function order($field, $order = '')
+    {
+        $order = strtoupper($order);
+        if (is_string($field))
+        {
+            $order = empty($order) ? 'DESC': $order;
+            $this->options['order'] .= "$field $order, ";
+        }else{
+            foreach ($field as $k => $v)
+            {
+                $v = strtoupper($v);
+                $this->options['order'] .= "$k $v,";
+            }
+        }
+        return $this;
+    }
+
+    //限制
+    public function limit($limit)
+    {
+        $this->options['limit'] = ' LIMIT '.$limit;
+        return $this;
+    }
+
     //分页
-    public function page($page = 1,$num = 12)
+    public function page($page = 1, $num = 10)
     {
         $page = intval($page);
         $num = intval($num);
@@ -209,11 +223,54 @@ class Mysql
         return $this;
     }
 
-    //调试
-    public function debug()
+    //自动判断新增还是更新
+    public function save(array $data) :int
     {
-        $this->debug = true;
-        return $this;
+        if(strlen($this->options['where']) > 0)
+        {
+            return $this->update($data);
+        }
+        return $this->insert($data);
+    }
+
+    //添加
+    public function insert(array $data) :int
+    {
+        $update = '';
+        foreach($data as $k => $v)
+        {
+            $this->options['param'][':' . $k]=$v;
+            $update .= $k . "=:" . $k . ",";
+        }
+        $update = trim($update, ',');
+        $this->options['sql'] = "INSERT INTO {$this->options['table']} SET $update;";
+        $this->exec($this->options['sql'], $this->options['param']);
+        return $this->_PDO->lastInsertId();
+    }
+
+    //删除
+    public function delete() :int
+    {
+        $this->pre();
+        $this->options['sql'] = "DELETE FROM {$this->options['table']} {$this->options['where']}";
+        $this->exec($this->options['sql'], $this->options['param']);
+        return $this->rowCount;
+    }
+
+    //更新
+    public function update(array $data) :int
+    {
+        $this->pre();
+        $update = '';
+        foreach($data as $k => $v)
+        {
+            $this->options['param'][':' . $k]=$v;
+            $update .= $k . "=:" . $k . ",";
+        }
+        $update = trim($update, ',');
+        $this->options['sql'] = "UPDATE {$this->options['table']} SET {$update} {$this->options['where']}";
+        $this->exec($this->options['sql'], $this->options['param']);
+        return $this->rowCount;
     }
 
     //结果集
@@ -223,14 +280,25 @@ class Mysql
         return $res;
     }
 
-    //获取单条数据
-    public function find()
+    /**
+     * Count elements of an object
+     */
+    public function count(string $field = '*') :int
     {
-        $this->limit(1);
+        $this->options['field'] = "COUNT($field) AS count";
         $res = $this->preQuery();
+        return $res[0]['count'];
+    }
+
+    private function one($res)
+    {
+        if (count($res) == 0)
+        {
+            return null;
+        }
+        $res = $res[0];
         $column = explode(',', $this->field);
-        $this->field = '';
-        if($res && count($column) == 1)
+        if($res && $this->field != '*' && count($column) == 1)
         {
             $column = str_replace(' ', '', $column);
             return $res[$column[0]];
@@ -239,112 +307,36 @@ class Mysql
         }
     }
 
-    //更新
-    public function update($data)
+    //获取单条数据
+    public function find()
     {
-        if($this->options['where'])
-        {
-            $update = '';
-            foreach($data as $k => $v)
-            {
-                $column_key = '';
-                foreach (explode('.',$k) as $kk => $vv) {
-                    $column_key .= '`'.$vv.'`.';
-                    $column_plac=$vv;
-                }
-                $this->options['param'][$column_plac]=$v;
-                $column_key = trim($column_key,'.');
-                $update .= $column_key . "=:".$column_plac . ",";
-            }
-            $update = trim($update,',');
-            $this->where();
-            $this->options['sql'] = "update {$this->options['table']} set $update {$this->options['where']};";
-            return $this->exec($this->options['sql'], $this->options['param']);
-        }else{
-            echo '保存数据需指定条件';
-            exit();
-        }
+        $this->limit(1);
+        $res = $this->preQuery();
+        return $this->one($res);
     }
 
-    //添加
-    public function insert($data)
+    //自增
+    public function increment($field, $step = 1)
     {
-        $update = '';
-        foreach($data as $k => $v)
-        {
-            $column_key = '';
-            foreach (explode('.',$k) as $kk => $vv) {
-                $column_key .= '`'.$vv.'`.';
-                $column_plac=$vv;
-            }
-            $this->options['param'][$column_plac]=$v;
-            $column_key = trim($column_key,'.');
-            $update .= $column_key . "=:".$column_plac . ",";
-        }
-        $update = trim($update,',');
-        $this->options['sql'] = "insert into {$this->options['table']} set $update;";
+        $this->pre();
+        $update = "$field = $field + $step";
+        $this->options['sql'] = "UPDATE {$this->options['table']} SET $update {$this->options['where']}";
         $this->exec($this->options['sql'], $this->options['param']);
-        return $this->_PDO->lastInsertId();
+        return $this->rowCount;
     }
 
-    //删除
-    public function delete()
+    //自减
+    public function decrement($field, $step = 1)
     {
-        if($this->options['where'])
-        {
-            $this->where();
-            $this->options['sql'] = "delete from {$this->options['table']} {$this->options['where']};";
-            return $this->exec($this->options['sql'], $this->options['param']);
-        }else{
-            echo '删除数据需指定条件';
-            exit();
-        }
-    }
-
-    //执行原生query
-    public function query($sql, $param = [])
-    {
-        $this->clearParam();
-        if($this->debug === true)
-        {
-            echo "<pre>";
-            echo $this->debugSql();
-            exit();
-        }else{
-            $pre = $this->_PDO->prepare($sql);
-            if(!$pre)
-            {
-                $this->_error();
-            }
-            $pre->execute($param);
-            if($this->_error())
-            {
-                return $pre->fetchAll(\PDO::FETCH_ASSOC);
-            }
-        }
-    }
-
-    //执行原生exec
-    public function exec($sql,$param = [])
-    {
-        $this->clearParam();
-        if($this->debug)
-        {
-            echo "<pre>";
-            echo $this->debugSql();
-            exit();
-        }else{
-            $pre = $this->_PDO->prepare($sql);
-            $res = $pre->execute($param);
-            if($this->_error())
-            {
-                return $res;
-            }
-        }
+        $this->pre();
+        $update = "$field = $field - $step";
+        $this->options['sql'] = "UPDATE {$this->options['table']} SET $update {$this->options['where']}";
+        $this->exec($this->options['sql'], $this->options['param']);
+        return $this->rowCount;
     }
 
     //事务
-    public function trans($callback,$arr=[])
+    public function trans($callback, $arr = [])
     {
         $this->_PDO->beginTransaction();
         try {
@@ -354,51 +346,58 @@ class Mysql
             }
             $this->_PDO->commit();
             return $result;
-        } catch (\Exception $e) {
-            $this->_PDO->rollback();
-            throw $e;
+        } catch (\PDOException $e)
+        {
+            $this->error($e->getMessage(), $this->getSql());
         }
     }
 
-    //清空参数
-    public function clearParam()
+    //执行query
+    public function query($sql, $param = [])
     {
-        $this->options['field'] = '*';
-        $this->options['where'] = '';
-        $this->options['order'] = '';
-        $this->options['limit'] = '';
-        $this->options['join'] = '';
-        $this->options['param'] = [];
-        $this->options['sql'] = '';
-    }
-
-    //自增
-    public function setInc($field,$step=1)
-    {
-        if($this->options['where'])
+        $this->clearParam();
+        $this->queryStart = microtime(true);
+        if($this->sql_debug === true)
         {
-            $update = $field.' = '.$field.'+'.$step;
-            $this->pre();
-            $this->options['sql'] = "update {$this->options['table']} set $update {$this->options['where']};";
-            return $this->exec($this->options['sql'], $this->options['param']);
+            return $this->getSql();
         }else{
-            echo '保存数据需指定条件';
-            exit();
+            try{
+                $pre = $this->_PDO->prepare($sql);
+                $pre->execute($param);
+                $action = strtoupper(explode(' ', $sql)[0]);
+                if ($action == 'SELECT')
+                {
+                    return $pre->fetchAll(\PDO::FETCH_ASSOC);
+                }else if ($action == 'INSERT'){
+                    return $this->_PDO->lastInsertId();
+                }else{
+                    return $pre->rowCount();
+                }
+
+            }catch (\PDOException $e)
+            {
+                $this->error($e->getMessage(), $sql);
+            }
         }
     }
 
-    //自减
-    public function setDec($field, $step = 1)
+    //执行原生exec
+    public function exec($sql,$param = [])
     {
-        if($this->options['where'])
+        $this->clearParam();
+        $this->queryStart = microtime(true);
+        if($this->sql_debug === true)
         {
-            $update = $field.' = '.$field.'-'.$step;
-            $this->pre();
-            $this->options['sql'] = "update {$this->options['table']} set $update {$this->options['where']};";
-            return $this->exec($this->options['sql'], $this->options['param']);
+            return $this->getSql();
         }else{
-            echo '保存数据需指定条件';
-            exit();
+            try{
+                $pre = $this->_PDO->prepare($sql);
+                $pre->execute($param);
+                $this->rowCount = $pre->rowCount();
+            }catch (\PDOException $e)
+            {
+                $this->error($e->getMessage(), $this->getSql());
+            }
         }
     }
 
@@ -409,9 +408,10 @@ class Mysql
         {
             $this->options['where'] = 'WHERE '. rtrim($this->options['where'],'AND ');
         }
+
         if(strlen($this->options['order']) > 0)
         {
-            $this->options['order'] = 'ORDER BY '. rtrim($this->options['order'],',');
+            $this->options['order'] = 'ORDER BY '. rtrim($this->options['order'],', ');
         }
         return $this;
     }
@@ -431,31 +431,44 @@ class Mysql
         return $this->query($this->options['sql'], $this->options['param']);
     }
 
-    //错误处理
-    protected function _error()
+    //清空参数
+    public function clearParam()
     {
-        if($this->_PDO->errorCode() == 00000)
-        {
-            return true;
-        }else{
-            echo '<pre>';
-            $error_msg = $this->_PDO->errorInfo()[2];
-            $e = new \Exception($error_msg);
-            echo '<h2>'.$error_msg.'</h2>';
-            echo '<h2>'.$e->getTrace()[2]['file'].' In line '.$e->getTrace()[2]['line'].'</h2>';
-            echo '<h2>SQL 语句:'.$this->debugSql().'</h2>';
-            exit();
-        }
+        $this->options['field'] = '*';
+        $this->options['where'] = '';
+        $this->options['order'] = '';
+        $this->options['limit'] = '';
+        $this->options['join'] = '';
+//        $this->options['param'] = [];
+//        $this->options['sql'] = '';
+    }
+
+    //错误处理
+    protected function error($errorMsg, $sql)
+    {
+        $log = new Log();
+        $runTime = bcdiv(bcsub(microtime(true), $this->queryStart, 10), 1000, 6) . ' s';
+        $context = compact('runTime', 'errorMsg');
+        $log->sql($sql, $context);
+        throw new \PDOException($errorMsg . str_repeat('-', 80) . 'SQL: ' .  $sql . str_repeat('-', 100));
+    }
+
+    //调试
+    public function debug()
+    {
+        $this->sql_debug = true;
+        return $this;
     }
 
     //生成调试sql
-    public function debugSql()
+    public function getSql()
     {
-        $this->debug = true;
-        $res = $this->options['sql'];
+        $sql = $this->options['sql'];
         foreach ($this->options['param'] as $k => $v) {
-            $res = str_replace(':'.$k,'"'.$v.'"',$res);
+            $v = is_string($v) ? "'$v'" : $v;
+            var_dump(":$k", $v);
+            $sql = str_replace($k, $v, $sql);
         }
-        return $res;
+        return $sql;
     }
 }

@@ -29,7 +29,7 @@ if( !isset( $_REQUEST['q'] ) ) { $quality = 80; } else { $quality = preg_replace
 
 // set path to cache directory (default is ./cache)
 // this can be changed to a different location
-$cache_dir = './cache';
+$cache_dir = './timthumb';
 
 // check to see if this image is in the cache already
 check_cache( $cache_dir );

@@ -33,41 +33,12 @@ class BingController extends BaseController
                 ['title', 'like', "%$search%"],
             ];
         }
-        $where = [
-            ['name', 'like', 1 . '%'],
-            ['title', 'like', '%' . 1],
-            ['id', '>', 1],
-            ['status', '=', 1]
-        ];
-//        $total = $this->bing
-//            ->field('id, title, src')
-//            ->where($where)
-//            ->where('id', '=', '1111')
-//            ->where('created_at', '<', '2012')
-//            ->page(1)->select();
-        $total = $this->bing
-            ->alias('a')
-//            ->join('user u','u.id = a.author_id')
-//            ->alias(['bing' => 'user'])
-            ->order('id','desc')
-            ->order(['title' =>'asc', 'src' => 'asc'])
-            ->field('id, title, src')
-//            ->where($where)
-//            ->where('id', '=', '1111')
-//            ->where('created_at', '<', '2012')
-
-
-//            ->find()
-            ->count();
-
-        var_dump($total);
-        exit();
+        $total =$this->bing->where($where)->count();
         $today = $this->bing->order('id', 'desc')->find();
-        $today->src = $this->staticUrl . $today->src;
+        $today['src'] = $this->staticUrl . $today['src'];
         $data = $this->bing->where($where)
             ->order($orderBy, 'desc')
-            ->offset(($current_page - 1) * $per_page)
-            ->limit($per_page)
+            ->page($current_page, $per_page)
             ->select();
         foreach ($data as $k => $v)
         {
@@ -82,7 +53,7 @@ class BingController extends BaseController
 
     public function all()
     {
-        $data = $this->bing->order('id', 'desc')->column('src', 'title')->select();
+        $data = $this->bing->order('id', 'desc')->field('src, title')->select();
         foreach ($data as $k => $v)
         {
             $data[$k]['src'] = $this->staticUrl . $v['src'];
@@ -107,7 +78,7 @@ class BingController extends BaseController
     {
         $total = $this->bing->count();
         $bg = $this->bing->where('id', rand(1, $total))->find();
-        $bg->src = $this->staticUrl . $bg->src;
+        $bg['src'] = $this->staticUrl . $bg['src'];
         return success($bg);
     }
 
@@ -122,7 +93,6 @@ class BingController extends BaseController
                 break;
         }
         return success($rs);
-
     }
 
     /*
@@ -171,32 +141,30 @@ class BingController extends BaseController
         {
             return error('暂无该日图片');
         }
-        $rs->src = $this->staticUrl . $rs->src;
-        return redirect($rs->src);
+        $rs['src'] = $this->staticUrl . $rs['src'];
+        return redirect($rs['src']);
     }
 
     public function rand()
     {
         $total = $this->bing->count();
         $rs = $this->bing->where('id', rand(1, $total))->find();
-        $rs->src = $this->staticUrl . $rs->src;
         if (is_null($rs))
         {
             return error('暂无该日图片');
         }
-        $rs->src = $this->staticUrl . $rs->src;
-        return redirect($rs->src);
+        $rs['src'] = $this->staticUrl . $rs['src'];
+        return redirect($rs['src']);
     }
 
     public function imageDesc()
     {
         $rs = $this->bing->where('created_at', date('Y-m-d H:i:s', strtotime($_GET['date'])))->find();
-        $rs->src = $this->staticUrl . $rs->src;
         if (is_null($rs))
         {
             return error('暂无该日图片');
         }
-        $rs->src = $this->staticUrl . $rs->src;
+        $rs['src'] = $this->staticUrl . $rs['src'];
         return success($rs);
     }
 
@@ -221,8 +189,7 @@ class BingController extends BaseController
         }
         $data = $this->bing->where($where)
             ->order($orderBy, 'desc')
-            ->offset(($current_page - 1) * $per_page)
-            ->limit($per_page)
+            ->page($current_page, $per_page)
             ->select();
         foreach ($data as $k => $v)
         {

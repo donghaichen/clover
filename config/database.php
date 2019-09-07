@@ -1,4 +1,7 @@
 <?php
+// +----------------------------------------------------------------------
+// | DATABASE 设置
+// +----------------------------------------------------------------------
 return [
     // 数据库类型
     'type'              => getenv('DB_TYPE'),
@@ -22,21 +25,3 @@ return [
     'debug'             => getenv('DB_DEBUG'),
 
 ];
-//return [
-//
-//    'driver' => 'mysql',
-//
-//    'host' => 'localhost',
-//
-//    'database' => getenv('DB_DATABASE'),
-//
-//    'username' => getenv('DB_USERNAME'),
-//
-//    'password' => getenv('DB_PASSWORD'),
-//
-//    'charset' => 'utf8mb4',
-//
-//    'collation' => 'utf8mb4_unicode_ci',
-//
-//    'prefix' => getenv('DB_PREFIX'),
-//];
