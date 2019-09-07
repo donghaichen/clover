@@ -4,19 +4,19 @@
 // +----------------------------------------------------------------------
 return [
 
-    'name' => '',
+    'name'                   => '',
 
-    'env' => '',
+    'env'                    => '',
 
-    'debug' => false,
+    'debug'                  => false,
 
-    'url' => 'http://localhost',
+    'url'                    => 'http://localhost',
 
-    'asset_url' => null,
+    'asset_url'              => null,
 
-    'timezone' => 'Asia/Shanghai',
+    'timezone'               => 'Asia/Shanghai',
 
-    'locale' => 'zh-cn',
+    'locale'                 => 'zh-cn',
 
-    'key' => 'APP_KEY',
+    'key'                    => 'APP_KEY',
 ];

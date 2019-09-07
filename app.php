@@ -4,6 +4,8 @@
 use App\Mysql;
 
 $config = config();
+var_dump($config);
+exit();
 
 // Eloquent ORM
 $database = $config['database'];
