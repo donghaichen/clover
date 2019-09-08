@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e11a225bee46c1f6de6d760bf52b9f8c",
+    "content-hash": "eac9a3b3ddd920a98e513f27685f8e85",
     "packages": [
         {
             "name": "filp/whoops",
@@ -171,7 +171,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5.9"
+        "php": ">=7.1.0"
     },
     "platform-dev": []
 }
