@@ -26,7 +26,11 @@
 > 运行环境要求 PHP 7.1 +
 
  ```shell
+ # 安装最新稳定版
 composer create-project clovers/clover --prefer-dist
+# 安装最新开发版
+composer create-project clovers/clover=dev-master --prefer-dist
+# 运行项目
 composer start
  ```
 or
