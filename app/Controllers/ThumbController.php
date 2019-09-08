@@ -206,8 +206,8 @@ class ThumbController extends BaseController
 
     private function getCacheFile ()
     {
-        $request_params = $_REQUEST;
-        $cachename = $_REQUEST['src'] . $_REQUEST['w'] . $_REQUEST['h'] . $_REQUEST['zc'] . $_REQUEST['q'];
+//        $cachename = $_REQUEST['src'] . $_REQUEST['w'] . $_REQUEST['h'] . $_REQUEST['zc'] . $_REQUEST['q'];
+        $cachename = $_REQUEST['src'] . $_REQUEST['w'] . $_REQUEST['h'] . $_REQUEST['zc'];
         $cache_file = md5( $cachename );
         return $cache_file;
     }
