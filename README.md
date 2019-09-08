@@ -31,7 +31,7 @@ composer create-project clovers/clover --prefer-dist
 # 安装最新开发版
 composer create-project clovers/clover=dev-master --prefer-dist
 # 运行项目
-composer start
+composer run dev
  ```
 or
  ```shell
