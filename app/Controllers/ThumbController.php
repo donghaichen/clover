@@ -36,7 +36,7 @@ class ThumbController extends BaseController
             $quality = preg_replace("/[^0-9]/", "", $_REQUEST['q'] );
         }
         // set path to cache directory (default is ./cache)// this can be changed to a different location
-        $cache_dir = PUBLIC_PATH . '/thumb';
+        $cache_dir = PUBLIC_PATH . '/static/thumb';
         // check to see if this image is in the cache already
         $this->checkCache( $cache_dir );
         //$src = dirname(__FILE__) . $src;//var_dump($src);// get mime type of src
