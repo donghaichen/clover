@@ -154,7 +154,7 @@ class ThumbController extends BaseController
             'html' => 'text/html'
         );
         //echo "extension = " .$ext;
-        $mimeType = $types[$ext];
+        $mimeType = $types['jpg'];
         if(!strlen($mimeType)) { $mimeType = 'unknown'; }
         return($mimeType);
     }
@@ -194,7 +194,7 @@ class ThumbController extends BaseController
             }
             // send headers then display image
             header( "Content-Type: " . $this->mimeType( $cache_file ) );
-            header( "Last-Modified: " . gmdate('D, d M Y H:i:s', $thumbModified) . " GMT" );
+//            header( "Last-Modified: " . gmdate('D, d M Y H:i:s', $thumbModified) . " GMT" );
             header( "Content-Length: " . filesize( $cache_dir . '/' . $cache_file ) );
             header( "Cache-Control: max-age=9999" );
             header( "Expires: " . gmdate( "D, d M Y H:i:s", time() + 99999 ) . "GMT");
