@@ -35,9 +35,8 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-      "cd clover"
+      "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
     ],
-    "run dev": "php -S 127.0.0.1:8888 -t public"
+    "start": "php -S 127.0.0.1:8888 -t public"
   }
 }
