@@ -141,7 +141,7 @@ class ThumbController extends BaseController
 
     private function mimeType ($file)
     {
-        $ext = substr($file,strripos($file,".")+1);
+        $ext = substr($file,strripos($file,".") + 1);
         $types = array(
             'jpg'  => 'image/jpeg',
             'jpeg' => 'image/jpeg',
