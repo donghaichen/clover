@@ -9,7 +9,7 @@
 
 //定义常量
 define('CLOVER_START', microtime(true));
-define('APP_VERSION', '1.0.0-dev');
+define('APP_VERSION', '2.0.0-dev');
 define('APP_PATH', dirname(__DIR__));
 define('PUBLIC_PATH', __DIR__);
 

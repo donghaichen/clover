@@ -2,7 +2,7 @@
   "name": "clovers/clover",
   "keywords": ["cms", "php", "PHP Framework" ],
   "description": "Clover - 为速度而生的 PHP 框架",
-  "version": "1.0.0-dev",
+  "version": "2.0.0-dev",
   "type": "project",
   "homepage": "http://doc.mengniang.tv/clover/1268895",
   "license": "MIT",
