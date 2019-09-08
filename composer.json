@@ -34,9 +34,9 @@
     }
   },
   "scripts": {
-    "app-start": "php -S localhost:8888 -t public",
-    "app-config-install": [
+    "post-install-cmd": [
       "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-    ]
+    ],
+    "start": "php -S 127.0.0.1:8888 -t public"
   }
 }
