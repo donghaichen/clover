@@ -2,6 +2,7 @@
 // +----------------------------------------------------------------------
 // | ROUTE 设置
 // +----------------------------------------------------------------------
+
 use NoahBuscher\Macaw\Macaw;
 Macaw::get('v1/database/dictionary', 'App\Controllers\DatabaseController@dictionary');
 Macaw::get('v1/thumb', 'App\Controllers\ThumbController@show');

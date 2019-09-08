@@ -1,18 +1,21 @@
 {
-  "name": "mengniang/mengniang",
-  "keywords": ["video", "php", "danma" ],
-  "descripthon": "A danma site see more to ",
+  "name": "clovers/clover",
+  "keywords": ["cms", "php", "PHP Framework" ],
+  "description": "Clover - 为速度而生的 PHP 框架",
+  "version": "1.0.0-dev",
   "type": "project",
-  "homepage": "http://mengniang.tv",
+  "homepage": "http://doc.mengniang.tv/clover/1268895",
   "license": "MIT",
   "authors": [
     {
-      "name": "Donghaichen",
-      "email": "chendonghai888@gmail.com"
+      "name": "Donghai Chen",
+      "email": "chendonghai888@gmail.com",
+      "homepage": "https://blog.mengniang.tv",
+      "role": "Developer"
     }
   ],
   "require": {
-    "php": ">=7.0.0",
+    "php": ">=7.1.0",
     "noahbuscher/macaw": "dev-master",
     "filp/whoops": "*"
   },

@@ -1,11 +1,8 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Bing;
-use http\Env\Request;
-
 /**
- * \HomeController
+ * BingController
  */
 class BingController extends BaseController
 {

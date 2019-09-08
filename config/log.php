@@ -2,13 +2,14 @@
 // +----------------------------------------------------------------------
 // | LOG 设置
 // +----------------------------------------------------------------------
+
 return [
     // 日志记录驱动
     'type'                => getenv('LOG_DRIVER'),
     // 关闭全局日志写入
     'close'               => false,
     // 日志路径
-    'path'                => APP_PATH . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'log' . DIRECTORY_SEPARATOR  . date('Y') . DIRECTORY_SEPARATOR . date('m'),
+    'path'                => APP_PATH . DIRECTORY_SEPARATOR . getenv('LOG_PATH') . DIRECTORY_SEPARATOR . 'log' . DIRECTORY_SEPARATOR  . date('Y') . DIRECTORY_SEPARATOR . date('m'),
     // 单文件日志写入
     'single'              => false,
     // 最大日志文件数量

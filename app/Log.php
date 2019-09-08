@@ -3,9 +3,16 @@ declare (strict_types = 1);
 
 namespace App;
 
-
 use Psr\Log\LoggerInterface;
 
+
+/**
+ * 日志类
+ *
+ * 日志类应该严格按照 PSR3 日志规范开发。 More see https://www.php-fig.org/psr/psr-3/
+ * @author      Donghai Chen
+ * @version     1.0
+ */
 class Log implements LoggerInterface
 {
     const EMERGENCY = 'emergency';

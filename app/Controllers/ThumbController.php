@@ -1,22 +1,25 @@
 <?php
-// TimThumb script created by Tim McDaniels and Darren Hoyt with tweaks by Ben Gillbanks for the Mimbo Pro theme
-// May be re-used pending permission of the authors, email cutout@gmail.com
-// Copyright 2008
-
-/* request parameters that can be sent to this script */
-
-// src: location of file from doc root
-// w: width
-// h: height
-// zc: zoom crop (0 or 1)
-// q: quality (default is 75 and max is 100)
-
-// either width or height can be used
-// example: <img src="/resizeImage.php?src=images/image.jpg&h=150" alt="some image" />
 
 namespace App\Controllers;
 
+/**
+ * ThumbController
+ *  TimThumb script created by Tim McDaniels and Darren Hoyt with tweaks by Ben Gillbanks for the Mimbo Pro theme
+ *  May be re-used pending permission of the authors, email cutout@gmail.com
+ *  Copyright 2008
 
+ *  request parameters that can be sent to this script
+
+ *  src: location of file from doc root
+ *  w: width
+ *  h: height
+ *  zc: zoom crop (0 or 1)
+ *  q: quality (default is 75 and max is 100)
+
+ *  either width or height can be used
+ *  example: <img src="/resizeImage.php?src=images/image.jpg&h=150" alt="some image" />
+ *
+ */
 class ThumbController extends BaseController
 {
 
@@ -154,7 +157,7 @@ class ThumbController extends BaseController
             'html' => 'text/html'
         );
         //echo "extension = " .$ext;
-        $mimeType = $types['jpg'];
+        $mimeType = $types[$ext];
         if(!strlen($mimeType)) { $mimeType = 'unknown'; }
         return($mimeType);
     }
@@ -190,7 +193,6 @@ class ThumbController extends BaseController
                     header( "HTTP/1.1 304 Not Modified" );
                     die();
                 }
-
             }
             // send headers then display image
             header( "Content-Type: " . $this->mimeType( $cache_file ) );
@@ -201,7 +203,6 @@ class ThumbController extends BaseController
             readfile( $cache_dir . '/' . $cache_file );
             die();
         }
-
     }
 
     private function getCacheFile ()

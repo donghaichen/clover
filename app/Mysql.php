@@ -2,6 +2,15 @@
 
 namespace App;
 
+/**
+ * SQL类
+ *
+ * 目前已完成 MySql 增删改查
+ * @todo 事务，MODEL，支持更多数据库类型，超时问题，返回对象
+ * @author      Donghai Chen
+ * @version     1.0
+ */
+
 class Mysql
 {
     protected $_PDO;
@@ -68,17 +77,12 @@ class Mysql
         return $this->_PDO;
     }
 
+    /**
+     * @todo toArray
+     */
     public function toArray()
     {
-        //首先判断是否是对象
-        $arr = is_object($obj) ? get_object_vars($obj) : $obj;
-        if(is_array($arr)) {
-            //这里相当于递归了一下，如果子元素还是对象的话继续向下转换
-            return array_map(__FUNCTION__, $arr);
-        }else {
-            return $arr;
-        }
-        return $this;
+
     }
 
     //数据表
