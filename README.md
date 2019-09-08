@@ -1,14 +1,11 @@
 <p align="center"><img src="https://res.cloudinary.com/clover-cms/image/upload/v1567957620/clover_pljwc5.png" height="50"></p>
-<p align="center">
-  
+
 [![Build Status](https://travis-ci.org/donghaichen/clover.svg?branch=master)](https://travis-ci.org/donghaichen/clover)
 [![Total Downloads](https://poser.pugx.org/clovers/clover/downloads)](https://packagist.org/packages/clovers/clover)
 [![Latest Stable Version](https://poser.pugx.org/clovers/clover/v/stable)](https://packagist.org/packages/clovers/clover)
 [![Latest Unstable Version](https://poser.pugx.org/clovers/clover/v/unstable)](https://packagist.org/packages/clovers/clover)
 [![composer.lock](https://poser.pugx.org/clovers/clover/composerlock)](https://packagist.org/packages/clovers/clover)
 [![License](https://poser.pugx.org/clovers/clover/license)](https://packagist.org/packages/clovers/clover)
-  
-</p>
 
 ## 认识 Clover
 
