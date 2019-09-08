@@ -10,7 +10,7 @@ return [
 
     'debug'                  => false,
 
-    'url'                    => 'http://localhost',
+    'url'                    => 'https://cloud.haoyupay.com',
 
     'asset_url'              => null,
 

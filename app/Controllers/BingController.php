@@ -10,14 +10,20 @@ use http\Env\Request;
 class BingController extends BaseController
 {
 
-    private $staticUrl = 'https://api.mengniang.tv';
-    private $downloadUrl = 'https://api.mengniang.tv/v1/bing/download?file=';
-    private $thumbUrl = 'https://api.mengniang.tv/timthumb.php?&w=643&h=356&a=&zc=1&src=';
+    private $staticUrl = '';
+    private $downloadUrl = '/v1/bing/download?file=';
+    private $thumbUrl = '/v1/thumb?&w=643&h=356&a=&zc=1&src=';
+    private $bingUrl = 'https://cn.bing.com';
     protected $bing;
     
     public function __construct()
     {
+        global $config;
+        $appUrl = $config['app']['url'];
         $this->bing = DB('bing');
+        $this->staticUrl = $appUrl;
+        $this->downloadUrl = $appUrl . $this->downloadUrl;
+        $this->thumbUrl = $appUrl . $this->thumbUrl;
     }
 
     public function home()
@@ -104,13 +110,13 @@ class BingController extends BaseController
         {
             return error('Token 错误');
         }
-        $bingUrl= 'https://cn.bing.com';
+        $bingUrl = $this->bingUrl;
         $bing = httpRequest($bingUrl . '/HPImageArchive.aspx?format=js&idx=0&n=1');
         $bing = json_decode($bing, true)["images"][0];
         $title = trim(explode('(', $bing['copyright'])[0]);
         $src = $bingUrl . $bing['url'];
         $created_at = date('Y-m-d');
-        parse_str(str_replace('https://www.bing.com/search?', '', $bing['copyrightlink']));
+        parse_str(str_replace($bingUrl . '/search?', '', $bing['copyrightlink']));
         $tag = $q;
         $path = '/static/bing/' . date('Y/') . date('m/');
         $src = $filename = $path . md5(password_hash($src, PASSWORD_DEFAULT)) . '.jpg';
@@ -127,7 +133,7 @@ class BingController extends BaseController
 
     public function today()
     {
-        $bingUrl= 'https://cn.bing.com';
+        $bingUrl= $this->bingUrl;
         $bing = httpRequest($bingUrl . '/HPImageArchive.aspx?format=js&idx=0&n=1');
         $bing = json_decode($bing, true)["images"][0];
         $src = $bingUrl . $bing['url'];
