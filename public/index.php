@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Clover - A PHP Framework
+ * Clover - 为速度而生的 PHP 框架
  *
  * @package  Clover
  * @author   Donghai Chen <chendonghai888@gmail.com>
@@ -9,7 +9,7 @@
 
 //定义常量
 define('CLOVER_START', microtime(true));
-define('APP_VERSION', '1.0.1');
+define('APP_VERSION', '1.0.0-dev');
 define('APP_PATH', dirname(__DIR__));
 define('PUBLIC_PATH', __DIR__);
 
