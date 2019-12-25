@@ -1,4 +1,7 @@
-if (!-e $request_filename) {
-         rewrite  ^/(.*)$  /index.php/$1  last;
-         break;
-}
+RewriteEngine On
+RewriteBase /public
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^.*$ index.php [L]

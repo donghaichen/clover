@@ -3,25 +3,29 @@
 // | ROUTE 设置
 // +----------------------------------------------------------------------
 
-use NoahBuscher\Macaw\Macaw;
-Macaw::get('v1/database/dictionary', 'App\Controllers\DatabaseController@dictionary');
-Macaw::get('v1/thumb', 'App\Controllers\ThumbController@show');
+use App\Framework\Router;
 
-Macaw::get('v1/bing/home', 'App\Controllers\BingController@home');
-Macaw::get('v1/bing/all', 'App\Controllers\BingController@all');
-Macaw::get('v1/bing/options', 'App\Controllers\BingController@options');
-Macaw::get('v1/bing/view/(:num)', 'App\Controllers\BingController@view');
-Macaw::get('v1/bing/bg', 'App\Controllers\BingController@bg');
-Macaw::get('v1/bing/download', 'App\Controllers\BingController@download');
-Macaw::get('v1/bing/today', 'App\Controllers\BingController@today');
-Macaw::get('v1/bing/image', 'App\Controllers\BingController@image');
-Macaw::get('v1/bing/rand', 'App\Controllers\BingController@rand');
-Macaw::get('v1/bing/imageDesc', 'App\Controllers\BingController@imageDesc');
-Macaw::get('v1/bing/list', 'App\Controllers\BingController@list');
-Macaw::get('v1/bing/getBing', 'App\Controllers\BingController@getBing');
+Router::get('/', function (){
+    echo 'Hello Clover';
+});
+Router::get('v1/database/dictionary', 'App\Controllers\DatabaseController@dictionary');
+Router::get('v1/thumb', 'App\Controllers\ThumbController@show');
 
-Macaw::$error_callback = function() {
+Router::get('v1/bing/home', 'App\Controllers\BingController@home');
+Router::get('v1/bing/all', 'App\Controllers\BingController@all');
+Router::get('v1/bing/options', 'App\Controllers\BingController@options');
+Router::get('v1/bing/view/(:num)', 'App\Controllers\BingController@view');
+Router::get('v1/bing/bg', 'App\Controllers\BingController@bg');
+Router::get('v1/bing/download', 'App\Controllers\BingController@download');
+Router::get('v1/bing/today', 'App\Controllers\BingController@today');
+Router::get('v1/bing/image', 'App\Controllers\BingController@image');
+Router::get('v1/bing/rand', 'App\Controllers\BingController@rand');
+Router::get('v1/bing/imageDesc', 'App\Controllers\BingController@imageDesc');
+Router::get('v1/bing/list', 'App\Controllers\BingController@list');
+Router::get('v1/bing/getBing', 'App\Controllers\BingController@getBing');
+
+Router::$error_callback = function() {
     throw new Exception("路由无匹配项 404 Not Found");
 };
 
-Macaw::dispatch();
+Router::dispatch();

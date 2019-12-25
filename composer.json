@@ -15,8 +15,8 @@
     }
   ],
   "require": {
+    "ext-json": "*",
     "php": ">=7.1.0",
-    "noahbuscher/macaw": "dev-master",
     "filp/whoops": "*"
   },
   "autoload": {
@@ -24,7 +24,7 @@
       "App\\": "app/"
     },
     "files": [
-      "app/helpers.php"
+      "app/Framework/helpers.php"
     ]
   },
   "repositories": {
