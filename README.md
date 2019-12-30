@@ -70,6 +70,6 @@ php -S 127.0.0.1:8888 -t public
 
 登录 Github 或 Coding，fork 本项目，我们一起为 API 开发贡献更多艺术。
 
-## License
+## 开源协议
 
-The Clover framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+本项目基于[MIT](https://opensource.org/licenses/MIT) 协议，请自由地享受和参与开源

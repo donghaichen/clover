@@ -6,7 +6,8 @@
 use App\Framework\Router;
 
 Router::get('/', function (){
-    echo 'Hello Clover';
+    //echo 'Hello Clover';
+    return ['version' => '5.3'];
 });
 Router::get('v1/database/dictionary', 'App\Controllers\DatabaseController@dictionary');
 Router::get('v1/thumb', 'App\Controllers\ThumbController@show');
