@@ -130,7 +130,7 @@ if (!function_exists('formatDate'))
 }
 
 
-if (! function_exists('env')) {
+if (! function_exists('cloverEnv')) {
     /**
      * 获取环境变量
      *
@@ -138,7 +138,7 @@ if (! function_exists('env')) {
      * @param  mixed  $default
      * @return mixed
      */
-    function env($varname, $default = null)
+    function cloverEnv($varname, $default = null)
     {
         $env = parse_ini_file(BASE_PATH . '/.env', true);
         foreach ($env as $key => $val) {
@@ -152,7 +152,7 @@ if (! function_exists('env')) {
                 putenv("$name=$val");
             }
         }
-        return getenv($varname) ?? $default;
+        return getenv($varname) ? getenv($varname) : $default;
     }
 }
 

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => cloverEnv('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -36,21 +36,22 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', 3306),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => env('DB_CHARSET', 'utf8mb4'),
-            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
-            'prefix' => env('DB_PREFIX', ''),
-            'strict' => env('DB_STRICT_MODE', true),
-            'engine' => env('DB_ENGINE', null),
-            'timezone' => env('DB_TIMEZONE', '+00:00'),
+            'host' => cloverEnv('DB_HOST', '127.0.0.1'),
+            'port' => cloverEnv('DB_PORT', 3306),
+            'database' => cloverEnv('DB_DATABASE', 'forge'),
+            'username' => cloverEnv('DB_USERNAME', 'forge'),
+            'password' => cloverEnv('DB_PASSWORD', ''),
+            'unix_socket' => cloverEnv('DB_SOCKET', ''),
+            'charset' => cloverEnv('DB_CHARSET', 'utf8mb4'),
+            'collation' => cloverEnv('DB_COLLATION', 'utf8mb4_unicode_ci'),
+            'prefix' => cloverEnv('DB_PREFIX', 'clover'),
+            'strict' => cloverEnv('DB_STRICT_MODE', true),
+            'engine' => cloverEnv('DB_ENGINE', null),
+            'timezone' => cloverEnv('DB_TIMEZONE', '+8:00'),
         ],
 
     ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -65,22 +66,22 @@ return [
 
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => cloverEnv('REDIS_CLIENT', 'phpredis'),
 
-        'cluster' => env('REDIS_CLUSTER', false),
+        'cluster' => cloverEnv('REDIS_CLUSTER', false),
 
         'default' => [
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
-            'port' => env('REDIS_PORT', 6379),
-            'database' => env('REDIS_DB', 0),
+            'host' => cloverEnv('REDIS_HOST', '127.0.0.1'),
+            'password' => cloverEnv('REDIS_PASSWORD', null),
+            'port' => cloverEnv('REDIS_PORT', 6379),
+            'database' => cloverEnv('REDIS_DB', 0),
         ],
 
         'cache' => [
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
-            'port' => env('REDIS_PORT', 6379),
-            'database' => env('REDIS_CACHE_DB', 1),
+            'host' => cloverEnv('REDIS_HOST', '127.0.0.1'),
+            'password' => cloverEnv('REDIS_PASSWORD', null),
+            'port' => cloverEnv('REDIS_PORT', 6379),
+            'database' => cloverEnv('REDIS_CACHE_DB', 1),
         ],
 
     ],

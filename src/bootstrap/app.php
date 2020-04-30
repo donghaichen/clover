@@ -2,7 +2,6 @@
 
 require_once __DIR__.'/../../vendor/autoload.php';
 
-date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +21,15 @@ $app = new Clover\Application([
     ],
 ]);
 
+$app->config = config();
 
-// $app->withFacades();
+date_default_timezone_set($app->config['app']['timezone']);
 
-// $app->withEloquent();
+// Eloquent ORM
+use Illuminate\Database\Capsule\Manager as DatabaseManager;
+$orm = new DatabaseManager;
+$orm->addConnection($app->config['database']['connections'][$app->config['database']['default']]);
+$orm->bootEloquent();
 
 
 /*
@@ -51,7 +55,7 @@ require __DIR__.'/../routes/web.php';
 | can respond to, as well as the controllers that may handle them.
 |
 */
-if (env('APP_DEBUG', 'false'))
+if ($app->config['app']['debug'])
 {
     $whoops = new \Whoops\Run;
     $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);

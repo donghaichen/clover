@@ -16,7 +16,7 @@ $router->get('/', ['before' => 'Authenticate'], function() {
 });
 $router->group('admin', ['before' => 'Authenticate'], function($r)
 {
-    $r->get('foo', function(){ return ['page: admin/foo']; });
+    $r->get('list', 'UserController@list');
     $r->get('bar', function(){ echo 'page: admin/bar'; });
     $r->get('baz/php', function(){ echo 'page: admin/baz/php'; });
     $r->post('login', function(){ echo 'page: admin/login'; });
