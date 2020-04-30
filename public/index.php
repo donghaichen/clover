@@ -8,14 +8,27 @@
  */
 
 
-/*
- * Register The Auto Loader
- */
-require __DIR__ . '/../vendor/autoload.php';
+define('PUBLIC_PATH', __DIR__);
+define('BASE_PATH', dirname(__DIR__));
+define('APP_PATH', dirname(__DIR__) . '/src');
+define('STORAGE_PATH', APP_PATH . '/storage');
 
 /*
  *  Run The Application
  */
-require __DIR__ . '/../app.php';
-$app = new app();
+
+$app = require __DIR__.'/../src/bootstrap/app.php';
+
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+|
+| Once we have the application, we can handle the incoming request
+| through the kernel, and send the associated response back to
+| the client's browser allowing them to enjoy the creative
+| and wonderful application we have prepared for them.
+|
+*/
+
 $app->run();
